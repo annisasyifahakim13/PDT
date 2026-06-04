@@ -119,4 +119,20 @@ public function updateStatus()
 
         require __DIR__ . '/../views/reports/create.php';
     }
+    public function aduanSaya()
+    {
+        $reports = $this->reportModel->getAduanSaya($_SESSION['user']['id']);
+        
+        require __DIR__ . '/../views/reports/aduan_saya.php';
+    }
+
+    public function history()
+    {
+        if($_SESSION['user']['role'] == 'admin') {
+            $reports = $this->reportModel->getHistoryUnion();
+            require __DIR__ . '/../views/reports/history.php'; // Ini file history.php yang kita buat di obrolan sebelumnya
+        } else {
+            redirect('index.php?page=reports');
+        }
+    }
 }

@@ -84,6 +84,16 @@ class ReportModel
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function getAduanSaya($userId)
+    {
+        $stmt = $this->db->prepare("
+            SELECT * FROM v_semua_aduan 
+            WHERE user_id = ? 
+            ORDER BY tanggal_hilang DESC
+        ");
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public function getTotalAduan($userId)
     {
@@ -108,6 +118,12 @@ class ReportModel
     $stmt->execute([$userId, $status]);
 
     return $stmt->fetch()['total'];
+    }
+
+    public function getHistoryUnion()
+    {
+        $stmt = $this->db->query("SELECT * FROM v_semua_aduan ORDER BY tanggal_hilang DESC");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }

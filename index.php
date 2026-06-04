@@ -39,6 +39,16 @@ switch ($page) {
         (new ReportController())->updateStatus();
         break;
 
+    case 'aduan_saya':
+        require_once __DIR__ . '/controllers/ReportController.php';
+        (new ReportController())->aduanSaya();
+        break;
+
+    case 'history':
+        require_once __DIR__ . '/controllers/ReportController.php';
+        (new ReportController())->history();
+        break;
+
     default:
         header('Location: index.php?page=login');
         exit;

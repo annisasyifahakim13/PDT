@@ -36,6 +36,12 @@
                     Kelola Aduan
                 </a>
             </li>
+            <li>
+                <a href="index.php?page=history">
+                    <i class="bi bi-collection"></i>
+                    Riwayat Semua
+                </a>
+            </li>
 
             <li>
                 <a href="index.php?page=status_logs">

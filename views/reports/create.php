@@ -37,7 +37,7 @@
             </li>
 
             <li>
-                <a href="#">
+                <a href="index.php?page=aduan_saya">
                     <i class="bi bi-file-earmark-text"></i>
                     Aduan Saya
                 </a>
