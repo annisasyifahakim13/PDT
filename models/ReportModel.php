@@ -24,32 +24,31 @@ class ReportModel
 
     public function create($data)
     {
-        $stmt = $this->db->prepare("
-            INSERT INTO reports
-            (
-                user_id,
-                nama_barang,
-                kategori,
-                lokasi_hilang,
-                tanggal_hilang,
-                deskripsi,
-                foto
-            )
-            VALUES (?,?,?,?,?,?,?)
-        ");
+        try {
+            $this->db->beginTransaction();
 
-        return $stmt->execute([
-            $data['user_id'],
-            $data['nama_barang'],
-            $data['kategori'],
-            $data['lokasi_hilang'],
-            $data['tanggal_hilang'],
-            $data['deskripsi'],
-            $data['foto']
-        ]);
+            $stmt = $this->db->prepare("CALL sp_insert_report(?, ?, ?, ?, ?, ?, ?)");
+            
+            $stmt->execute([
+                $data['user_id'],
+                $data['nama_barang'],
+                $data['kategori'],
+                $data['lokasi_hilang'],
+                $data['tanggal_hilang'],
+                $data['deskripsi'],
+                $data['foto']
+            ]);
+
+            $this->db->commit();
+            return true;
+
+        } catch (PDOException $e) {
+            $this->db->rollBack();
+            return false;
+        }
     }
     public function verify($id)
-{
+    {
     $stmt = $this->db->prepare("
         UPDATE reports
         SET status = 'Dalam Pencarian'
@@ -57,9 +56,9 @@ class ReportModel
     ");
 
     return $stmt->execute([$id]);
-}
-public function updateStatus($id, $status)
-{
+    }
+    public function updateStatus($id, $status)
+    {
     $stmt = $this->db->prepare("
         UPDATE reports
         SET status = ?
@@ -70,10 +69,10 @@ public function updateStatus($id, $status)
         $status,
         $id
     ]);
-}
+    }
 
-public function getByUser($userId)
-{
+    public function getByUser($userId)
+    {
     $stmt = $this->db->prepare("
         SELECT *
         FROM v_aduan_user
@@ -84,10 +83,10 @@ public function getByUser($userId)
     $stmt->execute([$userId]);
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+    }
 
-public function getTotalAduan($userId)
-{
+    public function getTotalAduan($userId)
+    {
     $stmt = $this->db->prepare("
         SELECT total_aduan_user(?) AS total
     ");
@@ -95,10 +94,10 @@ public function getTotalAduan($userId)
     $stmt->execute([$userId]);
 
     return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-}
+    }
 
-public function countStatus($userId, $status)
-{
+    public function countStatus($userId, $status)
+    {
     $stmt = $this->db->prepare("
         SELECT COUNT(*) as total
         FROM reports
@@ -109,6 +108,6 @@ public function countStatus($userId, $status)
     $stmt->execute([$userId, $status]);
 
     return $stmt->fetch()['total'];
-}
+    }
 
 }

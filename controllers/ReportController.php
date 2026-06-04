@@ -90,7 +90,6 @@ public function updateStatus()
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $foto = '';
-
             if (!empty($_FILES['foto']['name'])) {
                 $foto = time() . '_' . $_FILES['foto']['name'];
                 move_uploaded_file(
@@ -99,7 +98,7 @@ public function updateStatus()
                 );
             }
 
-            $this->reportModel->create([
+            $transaksi = $this->reportModel->create([
                 'user_id' => $_SESSION['user']['id'],
                 'nama_barang'    => $_POST['nama_barang'],
                 'kategori' => $_POST['kategori'],
@@ -108,6 +107,12 @@ public function updateStatus()
                 'deskripsi' => $_POST['deskripsi'],
                 'foto' => $foto
             ]);
+
+            if ($transaksi) {
+                $_SESSION['flash_msg'] = "<div class='alert alert-success'>Transaksi Berhasil: Data aduan berhasil disimpan!</div>";
+            } else {
+                $_SESSION['flash_msg'] = "<div class='alert alert-danger'>Transaksi Gagal: Terjadi kesalahan saat menyimpan data.</div>";
+            }
 
             redirect('index.php?page=reports');
         }

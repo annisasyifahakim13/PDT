@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
-</html><body>
+<body>
 <div class="dashboard-wrapper">
 
     <aside class="sidebar">
@@ -67,7 +67,12 @@
 
         </div>
 
-
+        <?php 
+        if (isset($_SESSION['flash_msg'])) {
+            echo $_SESSION['flash_msg'];
+            unset($_SESSION['flash_msg']); // Hapus session setelah pesan ditampilkan
+        }
+        ?>
         <div class="stats">
 
             <div class="stats">
@@ -189,3 +194,4 @@
 </div>
 
 </body>
+</html>
