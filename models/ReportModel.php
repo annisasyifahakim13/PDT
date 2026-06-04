@@ -71,4 +71,44 @@ public function updateStatus($id, $status)
         $id
     ]);
 }
+
+public function getByUser($userId)
+{
+    $stmt = $this->db->prepare("
+        SELECT *
+        FROM v_aduan_user
+        WHERE user_id = ?
+        ORDER BY id DESC
+    ");
+
+    $stmt->execute([$userId]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function getTotalAduan($userId)
+{
+    $stmt = $this->db->prepare("
+        SELECT total_aduan_user(?) AS total
+    ");
+
+    $stmt->execute([$userId]);
+
+    return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+}
+
+public function countStatus($userId, $status)
+{
+    $stmt = $this->db->prepare("
+        SELECT COUNT(*) as total
+        FROM reports
+        WHERE user_id = ?
+        AND status = ?
+    ");
+
+    $stmt->execute([$userId, $status]);
+
+    return $stmt->fetch()['total'];
+}
+
 }

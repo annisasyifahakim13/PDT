@@ -6,187 +6,173 @@
     <title>Dashboard LostTrack</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
 
-<nav class="navbar navbar-dark bg-primary">
+</html><body>
+<div class="dashboard-wrapper">
 
-    <div class="container">
+    <aside class="sidebar">
 
-        <span class="navbar-brand">
+        <div class="logo">
             🔍 LostTrack
-        </span>
+        </div>
 
-        <div>
+        <ul class="menu">
 
-            <span class="text-white me-3">
-                Halo, <?= $_SESSION['user']['nama'] ?>
-                (<?= $_SESSION['user']['role'] ?>)
+            <li>
+                <a href="index.php?page=reports">
+                    <i class="bi bi-grid-1x2-fill"></i>
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="index.php?page=create_report">
+                    <i class="bi bi-plus-circle"></i>
+                    Tambah Aduan
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="bi bi-file-earmark-text"></i>
+                    Aduan Saya
+                </a>
+            </li>
+
+            <li>
+                <a href="index.php?page=logout">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <main class="content">
+
+        <div class="topbar">
+
+            <h2>Dashboard</h2>
+
+            <span>
+                Halo,
+                <?= $_SESSION['user']['nama'] ?>
             </span>
 
-            <a
-                href="index.php?page=create_report"
-                class="btn btn-light btn-sm"
-            >
-                + Tambah Aduan
-            </a>
+        </div>
 
-            <a
-                href="index.php?page=logout"
-                class="btn btn-danger btn-sm"
-            >
-                Logout
-            </a>
+
+        <div class="stats">
+
+            <div class="stats">
+
+                <div class="stat-card">
+
+                    <h3><?= $totalAduan ?></h3>
+
+                    <p>Total Aduan</p>
+
+                </div>
+
+                <div class="stat-card warning">
+
+                    <h3><?= $menunggu ?></h3>
+
+                    <p>Menunggu</p>
+
+                </div>
+
+                <div class="stat-card success">
+
+                    <h3><?= $ditemukan ?></h3>
+
+                    <p>Ditemukan</p>
+
+                </div>
+
+            </div>
 
         </div>
 
-    </div>
+        <div class="card">
 
-</nav>
+            <div class="card-header bg-white">
 
-<div class="container mt-4">
+                <h5 class="mb-0">
+                    Aduan Terbaru
+                </h5>
 
-    <div class="card">
+            </div>
 
-        <div class="card-header">
-            <h4 class="mb-0">
-                Data Aduan Kehilangan
-            </h4>
-        </div>
-
-        <div class="card-body">
-
-            <table class="table table-bordered table-hover">
+            <table class="table table-hover align-middle">
 
                 <thead>
-
                     <tr>
-                        <th>No</th>
-                        <th>Barang</th>
-                        <th>Kategori</th>
+                        <th>ID Aduan</th>
+                        <th>Item</th>
                         <th>Lokasi</th>
                         <th>Tanggal</th>
                         <th>Status</th>
-
-                        <?php if(isset($_SESSION['user']['role']) && $_SESSION['user']['role'] == 'admin'): ?>
-                            <th>Aksi</th>
-                        <?php endif; ?>
-
                     </tr>
-
                 </thead>
 
                 <tbody>
 
-                <?php if(empty($reports)): ?>
+                <?php foreach($reports as $report): ?>
 
                     <tr>
-                        <td colspan="7" class="text-center">
-                            Belum ada aduan
+
+                        <td>
+                            #LT<?= str_pad($report['id'], 4, '0', STR_PAD_LEFT) ?>
                         </td>
-                    </tr>
 
-                <?php endif; ?>
+                        <td>
+                            <?= $report['nama_barang'] ?>
+                        </td>
 
-                <?php foreach($reports as $i => $report): ?>
+                        <td>
+                            <?= $report['lokasi_hilang'] ?>
+                        </td>
 
-                    <tr>
-
-                        <td><?= $i + 1 ?></td>
-
-                        <td><?= $report['nama_barang'] ?></td>
-
-                        <td><?= $report['kategori'] ?></td>
-
-                        <td><?= $report['lokasi_hilang'] ?></td>
-
-                        <td><?= $report['tanggal_hilang'] ?></td>
+                        <td>
+                            <?= date('d M Y', strtotime($report['tanggal_hilang'])) ?>
+                        </td>
 
                         <td>
 
-                            <?php
-                            $status = $report['status'] ?? 'Menunggu Verifikasi';
+                            <?php if($report['status']=='Menunggu Verifikasi'): ?>
 
-                            if($status == 'Menunggu Verifikasi'){
-                                echo '<span class="badge bg-warning text-dark">'.$status.'</span>';
-                            }
-                            elseif($status == 'Dalam Pencarian'){
-                                echo '<span class="badge bg-info">'.$status.'</span>';
-                            }
-                            elseif($status == 'Ditemukan'){
-                                echo '<span class="badge bg-success">'.$status.'</span>';
-                            }
-                            else{
-                                echo '<span class="badge bg-secondary">'.$status.'</span>';
-                            }
-                            ?>
+                                <span class="badge bg-warning text-dark">
+                                    Menunggu
+                                </span>
+
+                            <?php elseif($report['status']=='Dalam Pencarian'): ?>
+
+                                <span class="badge bg-info">
+                                    Dalam Proses
+                                </span>
+
+                            <?php elseif($report['status']=='Ditemukan'): ?>
+
+                                <span class="badge bg-success">
+                                    Ditemukan
+                                </span>
+
+                            <?php else: ?>
+
+                                <span class="badge bg-danger">
+                                    Ditutup
+                                </span>
+
+                            <?php endif; ?>
 
                         </td>
-
-<?php if(isset($_SESSION['user']['role']) && $_SESSION['user']['role'] == 'admin'): ?>
-
-<td>
-
-    <form
-        method="POST"
-        action="index.php?page=update_status"
-    >
-
-        <input
-            type="hidden"
-            name="id"
-            value="<?= $report['id'] ?>"
-        >
-
-        <select
-            name="status"
-            class="form-select form-select-sm mb-2"
-        >
-
-            <option
-                value="Menunggu Verifikasi"
-                <?= $status == 'Menunggu Verifikasi' ? 'selected' : '' ?>
-            >
-                Menunggu Verifikasi
-            </option>
-
-            <option
-                value="Dalam Pencarian"
-                <?= $status == 'Dalam Pencarian' ? 'selected' : '' ?>
-            >
-                Dalam Pencarian
-            </option>
-
-            <option
-                value="Ditemukan"
-                <?= $status == 'Ditemukan' ? 'selected' : '' ?>
-            >
-                Ditemukan
-            </option>
-
-            <option
-                value="Ditutup"
-                <?= $status == 'Ditutup' ? 'selected' : '' ?>
-            >
-                Ditutup
-            </option>
-
-        </select>
-
-        <button
-            type="submit"
-            class="btn btn-primary btn-sm w-100"
-        >
-            Simpan Status
-        </button>
-
-    </form>
-
-</td>
-
-<?php endif; ?>
 
                     </tr>
 
@@ -198,9 +184,8 @@
 
         </div>
 
-    </div>
+    </main>
 
 </div>
 
 </body>
-</html>

@@ -24,47 +24,85 @@
 </head>
 <body>
 
-<div class="container">
-    <div class="card auth-card">
-        <div class="card-body p-4">
-            <h2 class="text-center mb-4 auth-title">
-                🔍 LostTrack
-            </h2>
-            <p class="text-center text-muted">
+<div class="login-container">
+
+    <!-- KIRI -->
+    <div class="login-left">
+
+        <div class="branding">
+
+            <h1>🔍 LostTrack</h1>
+
+            <p class="subtitle">
                 Sistem Aduan Kehilangan Barang
             </p>
+
+            <p class="description">
+                Laporkan kehilangan barang dengan mudah,
+                pantau status penemuan, dan temukan kembali
+                barangmu dengan cepat.
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- KANAN -->
+    <div class="login-right">
+
+        <div class="auth-card">
+
+            <h2>Selamat Datang Kembali!</h2>
+
+            <p class="text-muted mb-4">
+                Silakan login untuk melanjutkan
+            </p>
+
             <?php if(isset($error)): ?>
                 <div class="alert alert-danger">
                     <?= $error ?>
                 </div>
             <?php endif; ?>
+
             <form method="POST">
+
                 <div class="mb-3">
+
                     <label>Email</label>
+
                     <input
                         type="email"
                         name="email"
                         class="form-control"
-                        required
-                    >
+                        placeholder="Masukkan email"
+                        required>
+
                 </div>
-                <div class="mb-3">
+
+                <div class="mb-4">
+
                     <label>Password</label>
+
                     <input
                         type="password"
                         name="password"
                         class="form-control"
-                        required
-                    >
+                        placeholder="Masukkan password"
+                        required>
+
                 </div>
-                <button class="btn btn-primary w-100">
+
+                <button
+                    type="submit"
+                    class="btn btn-login w-100">
+
                     Login
+
                 </button>
 
             </form>
-            <hr>
 
-            <div class="text-center">
+            <div class="register-link">
 
                 Belum punya akun?
 
