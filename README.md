@@ -152,21 +152,41 @@ nama barang, kategori, status laporan, nama pelapor
 
 join ini mempermudah administrator dalam memantau seluruh laporan kehilangan secara lebih terstruktur dan efisien.
 
-##🏗️ Stored Procedure
+## 🏗️ Stored Procedure
 Kami mengimplementasikan Stored Procedure sebagai enkapsulasi logika bisnis di sisi database. Hal ini bertujuan untuk meningkatkan performa dan keamanan aplikasi.
 
 sp_insert_report: Menangani prosedur penyimpanan data laporan baru secara atomik, memastikan bahwa semua kolom terisi sesuai validasi sebelum data masuk ke tabel reports.
-
+```
+DELIMITER //
+CREATE PROCEDURE sp_insert_report(IN p_user_id INT, IN p_nama_barang VARCHAR(255), ...)
+BEGIN
+    INSERT INTO reports (user_id, nama_barang, ...) VALUES (p_user_id, p_nama_barang, ...);
+END //
+DELIMITER ;
+```
 sp_delete_report: Mengelola penghapusan data secara terstruktur. Prosedur ini memastikan bahwa ketika sebuah laporan dihapus, ketergantungan data pada tabel lain dikelola dengan benar tanpa menyebabkan orphan record.
 
 ## 🧩 Fragmentasi & Partisi Logis
 Sistem menggunakan pendekatan fragmentasi logis dalam pengelolaan data. Kami memisahkan akses data antara laporan aktif dan data historis melalui View yang teroptimasi. Fragmentasi ini dilakukan agar query pada tabel utama reports tidak terbebani oleh data yang sudah selesai (arsip), sehingga waktu respons sistem tetap cepat meskipun jumlah data terus berkembang.
-
+```sql
+CREATE VIEW v_semua_aduan AS 
+SELECT id, nama_barang, status FROM reports WHERE status != 'Ditutup'
+UNION
+SELECT id, nama_barang, status FROM reports WHERE status = 'Ditutup';
+```
 ## 📂 Database Function
 Kami menggunakan User-Defined Functions untuk meminimalisir redundansi kode di sisi aplikasi:
 
 total_aduan_user(p_user_id): Menghitung secara dinamis jumlah total aduan yang pernah dibuat oleh seorang user berdasarkan ID.
-
+```
+CREATE FUNCTION total_aduan_user(p_user_id INT) RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE total INT;
+    SELECT COUNT(*) INTO total FROM reports WHERE user_id = p_user_id;
+    RETURN total;
+END;
+```
 total_menunggu(): Fungsi agregasi untuk mendapatkan jumlah laporan dengan status 'Menunggu Verifikasi'. Fungsi ini sangat krusial bagi dashboard Admin untuk memantau beban kerja secara real-time.
 
 ## ⚙️ Set Operation (UNION)
