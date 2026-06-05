@@ -136,15 +136,17 @@ Apabila seluruh proses berhasil dijalankan, maka perubahan data akan disimpan se
 
 ## JOIN
 Pada sistem LostTrack, Join diterapkan pada halaman kelola aduan yang digunakan oleh admin. Melalui Join, Admin dapat melihat informasi laporan kehilangan beserta identitas pelapor tanpa harus melakukan pencarian data secara terpisah.
->>SELECT reports.id,
-> >reports.nama_barang,
-> >reports.kategori,
-> >reports.status,
-> >users.nama AS nama_pelapor F
-> >ROM reports
-> >INNER JOIN users
-> >ON reports.user_id = users.id;
-
+```sql
+SELECT
+    reports.id,
+    reports.nama_barang,
+    reports.kategori,
+    reports.status,
+    users.nama AS nama_pelapor
+FROM reports
+INNER JOIN users
+    ON reports.user_id = users.id;
+```
 nah dari query ini nanti akan menampilkan ID Laporan
 nama barang, kategori, status laporan, nama pelapor
 
