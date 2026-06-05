@@ -10,55 +10,21 @@
 <body>
 <div class="dashboard-wrapper">
     <aside class="sidebar">
-        <div class="logo">
-            🔍 LostTrack
-        </div>
+        <div class="logo">🔍 LostTrack</div>
         <ul class="menu">
-            <li>
-                <a href="index.php?page=reports" class="active">
-                    <i class="bi bi-grid-1x2-fill"></i>
-                    Dashboard Admin
-                </a>
-            </li>
-            <li>
-                <a href="index.php?page=reports">
-                    <i class="bi bi-folder2-open"></i>
-                    Kelola Aduan
-                </a>
-            </li>
-            <li>
-                <a href="index.php?page=history">
-                    <i class="bi bi-collection"></i>
-                    Riwayat Semua
-                </a>
-            </li>
-            <li>
-                <a href="index.php?page=laporan_penemuan">
-                    <i class="bi bi-search"></i>
-                    Laporan Penemuan
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="index.php?page=backup">
-                    <i class="bi bi-database"></i>
-                    Backup Database
-                </a>
-            </li>
-            <li>
-                <a href="index.php?page=logout">
-                    <i class="bi bi-box-arrow-right"></i>
-                    Logout
-                </a>
-            </li>
+            <li><a href="index.php?page=reports" class="active"><i class="bi bi-grid-1x2-fill"></i> Dashboard Admin</a></li>
+            <li><a href="index.php?page=reports"><i class="bi bi-folder2-open"></i> Kelola Aduan</a></li>
+            <li><a href="index.php?page=history"><i class="bi bi-collection"></i> Riwayat Semua</a></li>
+            <li><a href="index.php?page=laporan_penemuan"><i class="bi bi-search"></i> Laporan Penemuan</a></li>
+            <li class="nav-item"><a class="nav-link" href="index.php?page=backup"><i class="bi bi-database"></i> Backup Database</a></li>
+            <li><a href="index.php?page=logout"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
         </ul>
     </aside>
 
     <main class="content">
         <div class="topbar">
             <h2>Dashboard Admin</h2>
-            <span>
-                Halo, <?= $_SESSION['user']['nama'] ?>
-            </span>
+            <span>Halo, <?= $_SESSION['user']['nama'] ?></span>
         </div>
 
         <div class="stats">
@@ -111,18 +77,21 @@
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <form method="POST" action="index.php?page=update_status">
-                                    <input type="hidden" name="id" value="<?= $report['id'] ?>">
-                                    <div class="d-flex gap-2">
+                                <div class="d-flex gap-2">
+                                    <form method="POST" action="index.php?page=update_status" class="d-flex gap-1">
+                                        <input type="hidden" name="id" value="<?= $report['id'] ?>">
                                         <select name="status" class="form-select form-select-sm">
-                                            <option value="Menunggu Verifikasi" <?= $report['status'] == 'Menunggu Verifikasi' ? 'selected' : '' ?>>Menunggu Verifikasi</option>
-                                            <option value="Dalam Pencarian" <?= $report['status'] == 'Dalam Pencarian' ? 'selected' : '' ?>>Dalam Pencarian</option>
+                                            <option value="Menunggu Verifikasi" <?= $report['status'] == 'Menunggu Verifikasi' ? 'selected' : '' ?>>Menunggu</option>
+                                            <option value="Dalam Pencarian" <?= $report['status'] == 'Dalam Pencarian' ? 'selected' : '' ?>>Pencarian</option>
                                             <option value="Ditemukan" <?= $report['status'] == 'Ditemukan' ? 'selected' : '' ?>>Ditemukan</option>
                                             <option value="Ditutup" <?= $report['status'] == 'Ditutup' ? 'selected' : '' ?>>Ditutup</option>
                                         </select>
-                                        <button type="submit" class="btn btn-primary btn-sm save-btn">Simpan</button>
-                                    </div>
-                                </form>
+                                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                                    </form>
+                                    <a href="index.php?page=delete_report&id=<?= $report['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus data ini?')">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -133,15 +102,6 @@
     </main>
 </div>
 
-<div id="loadingOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.8); z-index:9999;">
-    <div class="d-flex justify-content-center align-items-center h-100">
-        <div class="text-center">
-            <div class="spinner-border text-primary"></div>
-            <h5 class="mt-3">Wait For Minute...</h5>
-        </div>
-    </div>
-</div>
-
 <script>
 document.querySelectorAll("form").forEach(form => {
     form.addEventListener("submit", function(){
@@ -149,6 +109,5 @@ document.querySelectorAll("form").forEach(form => {
     });
 });
 </script>
-
 </body>
 </html>

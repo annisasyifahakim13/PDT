@@ -73,10 +73,15 @@ switch ($page) {
         require 'views/admin/backup_list.php';
         break;
 
-case 'simpan_penemuan':
-    require_once __DIR__ . '/controllers/ReportController.php';
-    (new ReportController())->simpanPenemuan();
-    break;
+    case 'simpan_penemuan':
+        require_once __DIR__ . '/controllers/ReportController.php';
+        (new ReportController())->simpanPenemuan();
+        break;
+
+    case 'delete':
+        require_once __DIR__ . '/controllers/ReportController.php';
+        (new ReportController())->delete();
+        break;
 
     default:
         header('Location: index.php?page=login');
