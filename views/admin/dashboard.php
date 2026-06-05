@@ -11,7 +11,6 @@
 
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
-
 <body>
 <div class="dashboard-wrapper">
 
@@ -79,8 +78,6 @@
             </span>
 
         </div>
-
-        <!-- STATISTIK -->
 
         <div class="stats">
 
@@ -239,11 +236,11 @@
                                         </select>
 
                                         <button
-                                            type="submit"
-                                            class="btn btn-primary btn-sm"
-                                        >
-                                            Simpan
-                                        </button>
+    type="submit"
+    class="btn btn-primary btn-sm save-btn"
+>
+    Simpan
+</button>
 
                                     </div>
 
@@ -266,6 +263,52 @@
     </main>
 
 </div>
+    </main>
 
+</div>
+
+<div id="loadingOverlay" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(255,255,255,0.8);
+z-index:9999;
+">
+
+    <div class="d-flex justify-content-center align-items-center h-100">
+
+        <div class="text-center">
+
+            <div class="spinner-border text-primary"></div>
+
+            <h5 class="mt-3">
+                Wait For Minute...
+            </h5>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+document.querySelectorAll("form").forEach(form => {
+
+    form.addEventListener("submit", function(){
+
+        document.getElementById("loadingOverlay").style.display = "block";
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>
 </body>
 </html>

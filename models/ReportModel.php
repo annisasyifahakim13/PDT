@@ -57,20 +57,81 @@ class ReportModel
 
     return $stmt->execute([$id]);
     }
-    public function updateStatus($id, $status)
-    {
-    $stmt = $this->db->prepare("
-        UPDATE reports
-        SET status = ?
-        WHERE id = ?
-    ");
 
-    return $stmt->execute([
-        $status,
-        $id
-    ]);
+   public function updateStatus($id, $status)
+{
+    try {
+
+        $this->db->beginTransaction();
+
+        $stmt = $this->db->prepare("
+            SELECT *
+            FROM reports
+            WHERE id = ?
+            FOR UPDATE
+        ");
+
+        $stmt->execute([$id]);
+
+        $report = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if(!$report){
+            throw new Exception("Laporan tidak ditemukan");
+        }
+
+        $statusLama = $report['status'];
+
+        $stmt = $this->db->prepare("
+            INSERT INTO admin_activity
+            (
+                admin_id,
+                aktivitas
+            )
+            VALUES (?, ?)
+        ");
+
+        $stmt->execute([
+            $_SESSION['user']['id'],
+            'Update Status'
+        ]);
+        sleep(15);
+        $stmt = $this->db->prepare("
+            UPDATE reports
+            SET status = ?
+            WHERE id = ?
+        ");
+
+        $stmt->execute([
+            $status,
+            $id
+        ]);
+        $stmt = $this->db->prepare("
+            INSERT INTO status_logs
+            (
+                report_id,
+                status_lama,
+                status_baru
+            )
+            VALUES (?, ?, ?)
+        ");
+
+        $stmt->execute([
+            $id,
+            $statusLama,
+            $status
+        ]);
+
+        $this->db->commit();
+
+        return true;
+
+    } catch(Exception $e){
+
+        $this->db->rollBack();
+
+        die($e->getMessage());
     }
-
+}
     public function getByUser($userId)
     {
     $stmt = $this->db->prepare("

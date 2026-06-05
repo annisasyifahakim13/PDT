@@ -1,10 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
 
     <title>Dashboard LostTrack</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -74,41 +74,23 @@
         }
         ?>
         <div class="stats">
-
             <div class="stats">
-
                 <div class="stat-card">
-
                     <h3><?= $totalAduan ?></h3>
-
                     <p>Total Aduan</p>
-
                 </div>
-
                 <div class="stat-card warning">
-
                     <h3><?= $menunggu ?></h3>
-
                     <p>Menunggu</p>
-
                 </div>
-
                 <div class="stat-card success">
-
                     <h3><?= $ditemukan ?></h3>
-
                     <p>Ditemukan</p>
-
                 </div>
-
             </div>
-
         </div>
-
         <div class="card">
-
             <div class="card-header bg-white">
-
                 <h5 class="mb-0">
                     Aduan Terbaru
                 </h5>
@@ -152,7 +134,6 @@
                         <td>
 
                             <?php if($report['status']=='Menunggu Verifikasi'): ?>
-
                                 <span class="badge bg-warning text-dark">
                                     Menunggu
                                 </span>

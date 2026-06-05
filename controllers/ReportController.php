@@ -44,32 +44,26 @@ class ReportController
             );
 
             $totalAduan = count($reports);
-
             $menunggu = 0;
             $ditemukan = 0;
-
             foreach($reports as $report)
             {
                 if($report['status'] == 'Menunggu Verifikasi')
                 {
                     $menunggu++;
                 }
-
                 if($report['status'] == 'Ditemukan')
                 {
                     $ditemukan++;
                 }
             }
-
             require __DIR__ . '/../views/reports/index.php';
         }
     }
     public function verify()
     {
         $id = $_GET['id'];
-
         $this->reportModel->verify($id);
-
         redirect('index.php?page=reports');
     }
 public function updateStatus()
