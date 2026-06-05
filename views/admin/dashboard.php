@@ -50,6 +50,13 @@
                 </a>
             </li>
 
+           <li class="nav-item">
+                <a class="nav-link" href="index.php?page=backup">
+                    <i class="bi bi-database"></i>
+                    Backup Database
+                </a>
+            </li>
+
             <li>
                 <a href="index.php?page=logout">
                     <i class="bi bi-box-arrow-right"></i>

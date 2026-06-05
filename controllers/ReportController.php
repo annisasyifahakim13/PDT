@@ -130,7 +130,7 @@ public function updateStatus()
     {
         if($_SESSION['user']['role'] == 'admin') {
             $reports = $this->reportModel->getHistoryUnion();
-            require __DIR__ . '/../views/reports/history.php'; // Ini file history.php yang kita buat di obrolan sebelumnya
+            require __DIR__ . '/../views/admin/history.php'; // Ini file history.php yang kita buat di obrolan sebelumnya
         } else {
             redirect('index.php?page=reports');
         }

@@ -10,13 +10,56 @@
 <body>
 <div class="dashboard-wrapper">
     <aside class="sidebar">
-        <div class="logo">🔍 LostTrack</div>
+
+        <div class="logo">
+            🔍 LostTrack
+        </div>
+
         <ul class="menu">
-            <li><a href="index.php?page=reports"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a></li>
-            <li><a href="index.php?page=create_report"><i class="bi bi-plus-circle"></i> Tambah Aduan</a></li>
-            <li><a href="index.php?page=history" class="active"><i class="bi bi-collection"></i> Riwayat</a></li>
-            <li><a href="index.php?page=logout"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+
+            <li>
+                <a href="index.php?page=reports" class="active">
+                    <i class="bi bi-grid-1x2-fill"></i>
+                    Dashboard Admin
+                </a>
+            </li>
+
+            <li>
+                <a href="index.php?page=reports">
+                    <i class="bi bi-folder2-open"></i>
+                    Kelola Aduan
+                </a>
+            </li>
+            <li>
+                <a href="index.php?page=history">
+                    <i class="bi bi-collection"></i>
+                    Riwayat Semua
+                </a>
+            </li>
+
+            <li>
+                <a href="index.php?page=status_logs">
+                    <i class="bi bi-clock-history"></i>
+                    Riwayat Status
+                </a>
+            </li>
+
+           <li class="nav-item">
+                <a class="nav-link" href="index.php?page=backup">
+                    <i class="bi bi-database"></i>
+                    Backup Database
+                </a>
+            </li>
+
+            <li>
+                <a href="index.php?page=logout">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
+            </li>
+
         </ul>
+
     </aside>
 
     <main class="content">

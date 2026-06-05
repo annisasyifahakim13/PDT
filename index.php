@@ -49,6 +49,10 @@ switch ($page) {
         (new ReportController())->history();
         break;
 
+    case 'backup':
+        require 'views/admin/backup_list.php';
+        break;
+
     default:
         header('Location: index.php?page=login');
         exit;
