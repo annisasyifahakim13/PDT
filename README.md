@@ -107,7 +107,7 @@ FROM reports
 WHERE id = ?
 FOR UPDATE;
 
->> Simulasi Konflik Akses Data
+Simulasi Konflik Akses Data
 Untuk keperluan pengujian, sistem mensimulasikan kondisi konflik akses data (deadlock scenario) dengan memberikan jeda proses menggunakan:
 
 sleep(15);
