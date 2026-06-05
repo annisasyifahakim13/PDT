@@ -32,6 +32,12 @@
                     Riwayat Semua
                 </a>
             </li>
+            <li>
+                <a href="index.php?page=laporan_penemuan">
+                    <i class="bi bi-search"></i>
+                    Laporan Penemuan
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="index.php?page=backup">
                     <i class="bi bi-database"></i>

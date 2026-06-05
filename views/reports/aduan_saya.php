@@ -15,6 +15,7 @@
             <li><a href="index.php?page=reports"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a></li>
             <li><a href="index.php?page=create_report"><i class="bi bi-plus-circle"></i> Tambah Aduan</a></li>
             <li><a href="index.php?page=aduan_saya" class="active"><i class="bi bi-file-earmark-text"></i> Aduan Saya</a></li>
+            <li><a href="index.php?page=saluran_barang"><i class="bi bi-broadcast"></i>Saluran Barang Hilang</a></li>
             <li><a href="index.php?page=logout"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
         </ul>
     </aside>

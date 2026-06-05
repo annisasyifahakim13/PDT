@@ -44,6 +44,26 @@ switch ($page) {
         (new ReportController())->aduanSaya();
         break;
 
+    case 'saluran_barang':
+        require_once __DIR__ . '/controllers/ReportController.php';
+        (new ReportController())->saluranBarang();
+        break;
+
+    case 'form_penemuan':
+        require_once __DIR__ . '/controllers/ReportController.php';
+        (new ReportController())->formPenemuan();
+        break;
+
+    case 'laporan_penemuan':
+        require_once __DIR__ . '/controllers/ReportController.php';
+        (new ReportController())->laporanPenemuan();
+        break;
+
+    case 'simpan_penemuan':
+        require_once __DIR__ . '/controllers/ReportController.php';
+        (new ReportController())->simpanPenemuan();
+        break;
+
     case 'history':
         require_once __DIR__ . '/controllers/ReportController.php';
         (new ReportController())->history();

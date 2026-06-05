@@ -33,6 +33,13 @@
                     Aduan Saya
                 </a>
             </li>
+
+            <li>
+                <a href="index.php?page=saluran_barang">
+                    <i class="bi bi-broadcast"></i>
+                    Saluran Barang Hilang
+                </a>
+            </li>
             <li>
                 <a href="index.php?page=logout">
                     <i class="bi bi-box-arrow-right"></i>

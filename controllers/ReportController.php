@@ -124,6 +124,67 @@ class ReportController
         require __DIR__ . '/../views/reports/aduan_saya.php';
     }
 
+    public function saluranBarang()
+    {
+        $reports = $this->reportModel->getAll();
+
+        require __DIR__ . '/../views/reports/saluran_barang.php';
+    }
+
+    public function formPenemuan()
+    {
+        $id = $_GET['id'];
+
+        $report = $this->reportModel->getById($id);
+
+        require __DIR__ . '/../views/reports/form_penemuan.php';
+    }
+
+    public function simpanPenemuan()
+    {
+        $stmt = getDB()->prepare("
+            INSERT INTO laporan_penemuan
+            (
+                report_id,
+                nama_penemu,
+                kontak,
+                keterangan
+            )
+            VALUES (?, ?, ?, ?)
+        ");
+
+        $stmt->execute([
+            $_POST['report_id'],
+            $_POST['nama_penemu'],
+            $_POST['kontak'],
+            $_POST['keterangan']
+        ]);
+
+        $_SESSION['flash_msg'] =
+            "<div class='alert alert-success'>
+                Laporan penemuan berhasil dikirim.
+            </div>";
+
+        header('Location: index.php?page=saluran_barang');
+        exit;
+    }
+
+    public function laporanPenemuan()
+    {
+        $stmt = getDB()->query("
+            SELECT lp.*,
+                r.nama_barang
+            FROM laporan_penemuan lp
+            JOIN reports r
+                ON lp.report_id = r.id
+            ORDER BY lp.id DESC
+        ");
+
+        $laporan = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        require __DIR__ . '/../views/admin/laporan_penemuan.php';
+    }
+
     public function history()
     {
         if($_SESSION['user']['role'] == 'admin') {
