@@ -88,7 +88,9 @@
                                         </select>
                                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                                     </form>
-                                    <a href="index.php?page=delete_report&id=<?= $report['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus data ini?')">
+                                    <a href="index.php?page=delete&id=<?= $report['id'] ?>" 
+                                        class="btn btn-danger btn-sm" 
+                                        onclick="return confirm('Yakin hapus data ini?')">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </div>

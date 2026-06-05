@@ -142,7 +142,11 @@ class ReportController
             $this->reportModel->delete($_GET['id']);
             $_SESSION['flash_msg'] = "<div class='alert alert-danger'>Data berhasil dihapus.</div>";
         }
-        header('Location: ' . $_SERVER['HTTP_REFERER']); 
+        if ($_SESSION['user']['role'] == 'admin') {
+            header('Location: index.php?page=reports'); 
+        } else {
+            header('Location: index.php?page=aduan_saya');
+        }
         exit;
     }
-}
+    }
