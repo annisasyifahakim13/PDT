@@ -29,6 +29,60 @@ Trigger ini dijalankan secara otomatis setelah terjadi perubahan data pada tabel
 Trigger akan memeriksa apakah status laporan berubah. Jika terjadi perubahan status, maka sistem akan menambahkan catatan baru ke tabel status_logs sebagai riwayat perubahan status laporan.
 <img width="1516" height="493" alt="Screenshot 2026-06-05 160201" src="https://github.com/user-attachments/assets/04c7e385-1672-442f-a9e6-670989711b15" />
 
+## Penggunaan Database View
+
+Sistem LostTrack menggunakan MySQL View untuk mempermudah pengambilan data laporan.
+
+### View Semua Aduan
+
+Digunakan pada halaman:
+
+Riwayat Semua (Admin)
+
+Controller:
+```php
+public function history()
+{
+    $stmt = getDB()->query("
+        SELECT *
+        FROM v_semua_aduan
+        ORDER BY id DESC
+    ");
+
+    $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    require __DIR__ . '/../views/admin/history.php';
+}
+```
+### View Aduan User
+
+Digunakan pada halaman:
+
+Aduan Saya (User)
+
+Controller:
+```php
+public function aduanSaya()
+{
+    $stmt = getDB()->prepare("
+        SELECT *
+        FROM v_aduan_user
+        WHERE user_id = ?
+        ORDER BY id DESC
+    ");
+
+    $stmt->execute([
+        $_SESSION['user']['id']
+    ]);
+
+    $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    require __DIR__ . '/../views/reports/aduan_saya.php';
+}
+```
+
+
+
 
 # 💾 Backup Database
 Untuk menjaga keamanan dan ketersediaan data, sistem LostTrack menyediakan fitur backup database manual dan otomatis. Backup dilakukan menggunakan utilitas mysqldump sehingga seluruh isi database dapat disimpan ke dalam file berekstensi.
