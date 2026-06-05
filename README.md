@@ -151,3 +151,34 @@ nah dari query ini nanti akan menampilkan ID Laporan
 nama barang, kategori, status laporan, nama pelapor
 
 join ini mempermudah administrator dalam memantau seluruh laporan kehilangan secara lebih terstruktur dan efisien.
+
+##🏗️ Stored Procedure
+Kami mengimplementasikan Stored Procedure sebagai enkapsulasi logika bisnis di sisi database. Hal ini bertujuan untuk meningkatkan performa dan keamanan aplikasi.
+
+sp_insert_report: Menangani prosedur penyimpanan data laporan baru secara atomik, memastikan bahwa semua kolom terisi sesuai validasi sebelum data masuk ke tabel reports.
+
+sp_delete_report: Mengelola penghapusan data secara terstruktur. Prosedur ini memastikan bahwa ketika sebuah laporan dihapus, ketergantungan data pada tabel lain dikelola dengan benar tanpa menyebabkan orphan record.
+
+## 🧩 Fragmentasi & Partisi Logis
+Sistem menggunakan pendekatan fragmentasi logis dalam pengelolaan data. Kami memisahkan akses data antara laporan aktif dan data historis melalui View yang teroptimasi. Fragmentasi ini dilakukan agar query pada tabel utama reports tidak terbebani oleh data yang sudah selesai (arsip), sehingga waktu respons sistem tetap cepat meskipun jumlah data terus berkembang.
+
+## 📂 Database Function
+Kami menggunakan User-Defined Functions untuk meminimalisir redundansi kode di sisi aplikasi:
+
+total_aduan_user(p_user_id): Menghitung secara dinamis jumlah total aduan yang pernah dibuat oleh seorang user berdasarkan ID.
+
+total_menunggu(): Fungsi agregasi untuk mendapatkan jumlah laporan dengan status 'Menunggu Verifikasi'. Fungsi ini sangat krusial bagi dashboard Admin untuk memantau beban kerja secara real-time.
+
+## ⚙️ Set Operation (UNION)
+Untuk fitur pelaporan yang komprehensif, kami memanfaatkan Set Operation (UNION). Operasi ini menggabungkan hasil dari dua atau lebih query yang berbeda ke dalam satu result set.
+
+Implementasi: Digunakan pada fitur riwayat (History) untuk menyatukan data laporan yang masih berjalan dan data laporan yang sudah ditutup/arsip.
+
+Tujuan: Memberikan output data yang seragam kepada Admin, memudahkan proses audit data, dan menyederhanakan logika pemanggilan data di sisi Controller karena sistem cukup memanggil satu View yang telah menerapkan operasi UNION.
+
+```sql
+SELECT id, nama_barang, status, 'Aktif' as kategori_data FROM reports WHERE status != 'Ditutup'
+UNION
+SELECT id, nama_barang, status, 'Arsip' as kategori_data FROM reports WHERE status = 'Ditutup'
+ORDER BY id DESC;
+```
