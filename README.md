@@ -123,3 +123,31 @@ Hasil:
 - Admin A berhasil menyimpan perubahan.
 - Admin B menunggu hingga lock dilepas.
 Jika waktu tunggu melebihi batas, sistem akan menampilkan pesan timeout.
+
+## TRANSACTION
+diterapkan pada fitur Update Status Aduan yang digunakan oleh Admin. 
+Saat Admin mengubah status laporan, sistem menjalankan beberapa operasi database dalam satu transaksi yang saling berkaitan.
+- Mengunci data laporan menggunakan FOR UPDATE.
+- Memperbarui status pada tabel reports.
+- Menyimpan riwayat perubahan status ke tabel status_logs.
+- Menyelesaikan transaksi menggunakan COMMIT.
+
+Apabila seluruh proses berhasil dijalankan, maka perubahan data akan disimpan secara permanen ke database. Namun jika terjadi kesalahan pada salah satu proses (misal lagi mau kirim tiba" mati lampu dan belum sempat ke commit) maka sistem akan menjalankan ROLLBACK sehingga seluruh perubahan dibatalkan dan database tetap berada dalam kondisi konsisten.
+
+## JOIN
+Pada sistem LostTrack, Join diterapkan pada halaman kelola aduan yang digunakan oleh admin. Melalui Join, Admin dapat melihat informasi laporan kehilangan beserta identitas pelapor tanpa harus melakukan pencarian data secara terpisah.
+```sql
+SELECT
+    reports.id,
+    reports.nama_barang,
+    reports.kategori,
+    reports.status,
+    users.nama AS nama_pelapor
+FROM reports
+INNER JOIN users
+    ON reports.user_id = users.id;
+```
+nah dari query ini nanti akan menampilkan ID Laporan
+nama barang, kategori, status laporan, nama pelapor
+
+join ini mempermudah administrator dalam memantau seluruh laporan kehilangan secara lebih terstruktur dan efisien.
