@@ -178,10 +178,15 @@ class ReportModel
     }
 
     public function getHistoryUnion()
-    {
-        $stmt = $this->db->query("SELECT * FROM v_semua_aduan ORDER BY tanggal_hilang DESC");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+{
+    $stmt = $this->db->query("
+        SELECT *
+        FROM v_semua_aduan
+        ORDER BY tanggal_hilang DESC
+    ");
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
     public function getById($id)
     {

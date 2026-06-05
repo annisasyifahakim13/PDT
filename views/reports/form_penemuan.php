@@ -27,47 +27,50 @@
 
             <hr>
 
-            <form>
+<form method="POST" action="index.php?page=simpan_penemuan">
 
-                <div class="mb-3">
-                    <label class="form-label">
-                        Nama Penemu
-                    </label>
+    <input
+        type="hidden"
+        name="report_id"
+        value="<?= $report['id'] ?>">
 
-                    <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Masukkan nama">
-                </div>
+    <div class="mb-3">
+        <label class="form-label">Nama Penemu</label>
 
-                <div class="mb-3">
-                    <label class="form-label">
-                        Kontak
-                    </label>
+        <input
+            type="text"
+            name="nama_penemu"
+            class="form-control"
+            required>
+    </div>
 
-                    <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Masukkan nomor HP">
-                </div>
+    <div class="mb-3">
+        <label class="form-label">Kontak</label>
 
-                <div class="mb-3">
-                    <label class="form-label">
-                        Keterangan
-                    </label>
+        <input
+            type="text"
+            name="kontak"
+            class="form-control"
+            required>
+    </div>
 
-                    <textarea
-                        class="form-control"
-                        rows="4"></textarea>
-                </div>
+    <div class="mb-3">
+        <label class="form-label">Keterangan</label>
 
-                <button
-                    type="button"
-                    class="btn btn-success">
-                    Kirim Laporan
-                </button>
+        <textarea
+            name="keterangan"
+            class="form-control"
+            rows="4"
+            required></textarea>
+    </div>
+<button
+    type="submit"
+    class="btn btn-success"
+    onclick="this.disabled=true; this.form.submit();">
+    Kirim Laporan
+</button>
 
-            </form>
+</form>
 
         </div>
 

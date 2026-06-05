@@ -140,61 +140,47 @@ class ReportController
         require __DIR__ . '/../views/reports/form_penemuan.php';
     }
 
-    public function simpanPenemuan()
-    {
-        $stmt = getDB()->prepare("
-            INSERT INTO laporan_penemuan
-            (
-                report_id,
-                nama_penemu,
-                kontak,
-                keterangan
-            )
-            VALUES (?, ?, ?, ?)
-        ");
+public function simpanPenemuan()
+{
+    $stmt = getDB()->prepare("
+        INSERT INTO laporan_penemuan
+        (
+            report_id,
+            nama_penemu,
+            kontak,
+            keterangan
+        )
+        VALUES (?, ?, ?, ?)
+    ");
 
-        $stmt->execute([
-            $_POST['report_id'],
-            $_POST['nama_penemu'],
-            $_POST['kontak'],
-            $_POST['keterangan']
-        ]);
+    $hasil = $stmt->execute([
+        $_POST['report_id'],
+        $_POST['nama_penemu'],
+        $_POST['kontak'],
+        $_POST['keterangan']
+    ]);
+header('Location: index.php?page=saluran_barang');
+exit;
+}
+public function laporanPenemuan()
+{
+    $stmt = getDB()->query("
+        SELECT lp.*, r.nama_barang
+        FROM laporan_penemuan lp
+        JOIN reports r ON lp.report_id = r.id
+        ORDER BY lp.id DESC
+    ");
 
-        $_SESSION['flash_msg'] =
-            "<div class='alert alert-success'>
-                Laporan penemuan berhasil dikirim.
-            </div>";
+    $laporan = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        header('Location: index.php?page=saluran_barang');
-        exit;
-    }
+    require __DIR__ . '/../views/admin/laporan_penemuan.php';
+}
+public function history()
+{
+    $reports = $this->reportModel->getHistoryUnion();
 
-    public function laporanPenemuan()
-    {
-        $stmt = getDB()->query("
-            SELECT lp.*,
-                r.nama_barang
-            FROM laporan_penemuan lp
-            JOIN reports r
-                ON lp.report_id = r.id
-            ORDER BY lp.id DESC
-        ");
-
-        $laporan = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        require __DIR__ . '/../views/admin/laporan_penemuan.php';
-    }
-
-    public function history()
-    {
-        if($_SESSION['user']['role'] == 'admin') {
-            $reports = $this->reportModel->getHistoryUnion();
-            require __DIR__ . '/../views/admin/history.php'; 
-        } else {
-            redirect('index.php?page=reports');
-        }
-    }
-
+    require __DIR__ . '/../views/admin/history.php';
+}
     public function riwayatStatus()
     {
         if (!isset($_GET['id'])) {

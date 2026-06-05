@@ -59,11 +59,6 @@ switch ($page) {
         (new ReportController())->laporanPenemuan();
         break;
 
-    case 'simpan_penemuan':
-        require_once __DIR__ . '/controllers/ReportController.php';
-        (new ReportController())->simpanPenemuan();
-        break;
-
     case 'history':
         require_once __DIR__ . '/controllers/ReportController.php';
         (new ReportController())->history();
@@ -72,6 +67,11 @@ switch ($page) {
     case 'backup':
         require 'views/admin/backup_list.php';
         break;
+
+case 'simpan_penemuan':
+    require_once __DIR__ . '/controllers/ReportController.php';
+    (new ReportController())->simpanPenemuan();
+    break;
 
     default:
         header('Location: index.php?page=login');
