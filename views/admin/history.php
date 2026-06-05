@@ -76,46 +76,65 @@
                 <thead>
                     <tr>
                         <th>ID Aduan</th>
-                        <th>Item</th>
+                        <th>User ID</th>
+                        <th>Barang</th>
+                        <th>Kategori</th>
                         <th>Lokasi</th>
                         <th>Tanggal</th>
                         <th>Status</th>
-                        <th>Aksi</th>
                     </tr>
                 </thead>
+
                 <tbody>
-                    <?php if(empty($reports)): ?>
-                        <tr><td colspan="6" class="text-center">Belum ada aduan.</td></tr>
-                    <?php else: ?>
-                        <?php foreach($reports as $report): ?>
-                        <tr>
-                            <td>#LT<?= str_pad($report['id'], 4, '0', STR_PAD_LEFT) ?></td>
-                            <td><?= $report['nama_barang'] ?></td>
-                            <td><?= $report['lokasi_hilang'] ?></td>
-                            <td><?= date('d M Y', strtotime($report['tanggal_hilang'])) ?></td>
-                            <td>
-                                <?php 
-                                    $warnaBadge = 'bg-secondary'; 
-                                    if ($report['status'] == 'Menunggu Verifikasi') {
-                                        $warnaBadge = 'bg-warning text-dark'; 
-                                    } elseif ($report['status'] == 'Dalam Pencarian') {
-                                        $warnaBadge = 'bg-info text-dark'; 
-                                    } elseif ($report['status'] == 'Ditemukan') {
-                                        $warnaBadge = 'bg-success'; 
-                                    } elseif ($report['status'] == 'Ditutup') {
-                                        $warnaBadge = 'bg-dark'; 
-                                    }
-                                ?>
-                                <span class="badge <?= $warnaBadge ?>"><?= $report['status'] ?></span>
-                            </td>
-                            <td>
-                                <a href="index.php?page=riwayat_status&id=<?= $report['id'] ?>" class="btn btn-sm" style="background-color: #4da6ff; color: white;">
-                                    <i class="bi bi-search"></i> Lacak
-                                </a>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                <?php foreach($reports as $report): ?>
+                <tr>
+
+                    <td>
+                        #LT<?= str_pad($report['id'], 4, '0', STR_PAD_LEFT) ?>
+                    </td>
+
+                    <td>
+                        <?= $report['user_id'] ?>
+                    </td>
+
+                    <td>
+                        <?= $report['nama_barang'] ?>
+                    </td>
+
+                    <td>
+                        <?= $report['kategori'] ?>
+                    </td>
+
+                    <td>
+                        <?= $report['lokasi_hilang'] ?>
+                    </td>
+
+                    <td>
+                        <?= date('d M Y', strtotime($report['tanggal_hilang'])) ?>
+                    </td>
+
+                    <td>
+                        <?php
+                        $warnaBadge = 'bg-secondary';
+
+                        if ($report['status'] == 'Menunggu Verifikasi') {
+                            $warnaBadge = 'bg-warning text-dark';
+                        } elseif ($report['status'] == 'Dalam Pencarian') {
+                            $warnaBadge = 'bg-info text-dark';
+                        } elseif ($report['status'] == 'Ditemukan') {
+                            $warnaBadge = 'bg-success';
+                        } elseif ($report['status'] == 'Ditutup') {
+                            $warnaBadge = 'bg-dark';
+                        }
+                        ?>
+
+                        <span class="badge <?= $warnaBadge ?>">
+                            <?= $report['status'] ?>
+                        </span>
+                    </td>
+
+                </tr>
+                <?php endforeach; ?>
                 </tbody>
             </table>
         </div>

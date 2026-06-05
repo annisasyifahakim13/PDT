@@ -35,33 +35,107 @@
                 <thead>
                     <tr>
                         <th>ID Aduan</th>
-                        <th>Item</th>
+                        <th>Barang</th>
+                        <th>Kategori</th>
+                        <th>Lokasi</th>
                         <th>Tanggal</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
+
                 <tbody>
-                    <?php if(empty($reports)): ?>
-                        <tr><td colspan="5" class="text-center">Belum ada aduan.</td></tr>
-                    <?php else: ?>
-                        <?php foreach($reports as $report): ?>
-                        <tr>
-                            <td>#LT<?= str_pad($report['id'], 4, '0', STR_PAD_LEFT) ?></td>
-                            <td><?= $report['nama_barang'] ?></td>
-                            <td><?= date('d M Y', strtotime($report['tanggal_hilang'])) ?></td>
-                            <td><span class="badge bg-secondary"><?= $report['status'] ?></span></td>
-                            <td>
-                                <div class="d-flex gap-2">
-                                    <a href="index.php?page=riwayat_status&id=<?= $report['id'] ?>" class="btn btn-sm btn-primary"><i class="bi bi-search"></i> Lacak</a>
-                                    <?php if($report['status'] == 'Menunggu Verifikasi'): ?>
-                                        <a href="index.php?page=delete&id=<?= $report['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus aduan ini?')"><i class="bi bi-trash"></i> Hapus</a>
-                                    <?php endif; ?>
-                                </div>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+
+                <?php if(empty($reports)): ?>
+
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            Belum ada aduan.
+                        </td>
+                    </tr>
+
+                <?php else: ?>
+
+                    <?php foreach($reports as $report): ?>
+
+                    <tr>
+
+                        <td>
+                            #LT<?= str_pad($report['id'],4,'0',STR_PAD_LEFT) ?>
+                        </td>
+
+                        <td>
+                            <?= $report['nama_barang'] ?>
+                        </td>
+
+                        <td>
+                            <?= $report['kategori'] ?>
+                        </td>
+
+                        <td>
+                            <?= $report['lokasi_hilang'] ?>
+                        </td>
+
+                        <td>
+                            <?= date('d M Y', strtotime($report['tanggal_hilang'])) ?>
+                        </td>
+
+                        <td>
+
+                            <?php
+                            $warnaBadge = 'bg-secondary';
+
+                            if($report['status']=='Menunggu Verifikasi'){
+                                $warnaBadge='bg-warning text-dark';
+                            }
+                            elseif($report['status']=='Dalam Pencarian'){
+                                $warnaBadge='bg-info text-dark';
+                            }
+                            elseif($report['status']=='Ditemukan'){
+                                $warnaBadge='bg-success';
+                            }
+                            elseif($report['status']=='Ditutup'){
+                                $warnaBadge='bg-dark';
+                            }
+                            ?>
+
+                            <span class="badge <?= $warnaBadge ?>">
+                                <?= $report['status'] ?>
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="d-flex gap-2">
+
+                                <a href="index.php?page=riwayat_status&id=<?= $report['id'] ?>"
+                                class="btn btn-primary btn-sm">
+                                    <i class="bi bi-search"></i> Lacak
+                                </a>
+
+                                <?php if($report['status']=='Menunggu Verifikasi'): ?>
+
+                                <a href="index.php?page=delete&id=<?= $report['id'] ?>"
+                                class="btn btn-danger btn-sm"
+                                onclick="return confirm('Yakin hapus aduan ini?')">
+
+                                    <i class="bi bi-trash"></i> Hapus
+
+                                </a>
+
+                                <?php endif; ?>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    <?php endforeach; ?>
+
+                <?php endif; ?>
+
                 </tbody>
             </table>
         </div>

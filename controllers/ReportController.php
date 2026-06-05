@@ -88,7 +88,19 @@ class ReportController
 
     public function aduanSaya()
     {
-        $reports = $this->reportModel->getAduanSaya($_SESSION['user']['id']);
+        $stmt = getDB()->prepare("
+            SELECT *
+            FROM v_aduan_user
+            WHERE user_id = ?
+            ORDER BY id DESC
+        ");
+
+        $stmt->execute([
+            $_SESSION['user']['id']
+        ]);
+
+        $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         require __DIR__ . '/../views/reports/aduan_saya.php';
     }
 
@@ -122,7 +134,14 @@ class ReportController
 
     public function history()
     {
-        $reports = $this->reportModel->getHistoryUnion();
+        $stmt = getDB()->query("
+            SELECT *
+            FROM v_semua_aduan
+            ORDER BY id DESC
+        ");
+
+        $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         require __DIR__ . '/../views/admin/history.php';
     }
 
