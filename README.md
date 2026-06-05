@@ -123,3 +123,13 @@ Hasil:
 - Admin A berhasil menyimpan perubahan.
 - Admin B menunggu hingga lock dilepas.
 Jika waktu tunggu melebihi batas, sistem akan menampilkan pesan timeout.
+
+## Transaction
+diterapkan pada fitur Update Status Aduan yang digunakan oleh Admin. 
+Saat Admin mengubah status laporan, sistem menjalankan beberapa operasi database dalam satu transaksi yang saling berkaitan.
+- Mengunci data laporan menggunakan FOR UPDATE.
+- Memperbarui status pada tabel reports.
+- Menyimpan riwayat perubahan status ke tabel status_logs.
+- Menyelesaikan transaksi menggunakan COMMIT.
+
+Apabila seluruh proses berhasil dijalankan, maka perubahan data akan disimpan secara permanen ke database. Namun jika terjadi kesalahan pada salah satu proses (misal lagi mau kirim tiba" mati lampu dan belum sempat ke commit) maka sistem akan menjalankan ROLLBACK sehingga seluruh perubahan dibatalkan dan database tetap berada dalam kondisi konsisten.
