@@ -52,14 +52,7 @@ if (is_dir($backupDir)) {
             <li>
                 <a href="index.php?page=history">
                     <i class="bi bi-collection"></i>
-                    Riwayat Semua
-                </a>
-            </li>
-
-            <li>
-                <a href="index.php?page=status_logs">
-                    <i class="bi bi-clock-history"></i>
-                    Riwayat Status
+                    Riwayat
                 </a>
             </li>
 

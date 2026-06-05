@@ -18,7 +18,7 @@
         <ul class="menu">
 
             <li>
-                <a href="index.php?page=reports" class="active">
+                <a href="index.php?page=reports">
                     <i class="bi bi-grid-1x2-fill"></i>
                     Dashboard Admin
                 </a>
@@ -30,21 +30,15 @@
                     Kelola Aduan
                 </a>
             </li>
+            
             <li>
-                <a href="index.php?page=history">
+                <a href="index.php?page=history" class="active">
                     <i class="bi bi-collection"></i>
-                    Riwayat Semua
+                    Riwayat
                 </a>
             </li>
 
-            <li>
-                <a href="index.php?page=status_logs">
-                    <i class="bi bi-clock-history"></i>
-                    Riwayat Status
-                </a>
-            </li>
-
-           <li class="nav-item">
+            <li class="nav-item">
                 <a class="nav-link" href="index.php?page=backup">
                     <i class="bi bi-database"></i>
                     Backup Database
@@ -67,8 +61,11 @@
             <h2>Riwayat Keseluruhan</h2>
         </div>
 
-        <div class="card">
-            <table class="table table-hover align-middle">
+        <div class="card mt-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Semua Laporan</h5>
+            </div>
+            <table class="table table-hover align-middle mb-0">
                 <thead>
                     <tr>
                         <th>ID Aduan</th>
@@ -76,26 +73,42 @@
                         <th>Lokasi</th>
                         <th>Tanggal</th>
                         <th>Status</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php 
-                    require_once __DIR__ . '/../../models/ReportModel.php';
-                    $rm = new ReportModel();
-                    $allReports = $rm->getHistoryUnion();
-                    
-                    foreach($allReports as $report): 
-                    ?>
-                    <tr>
-                        <td>#LT<?= str_pad($report['id'], 4, '0', STR_PAD_LEFT) ?></td>
-                        <td><?= $report['nama_barang'] ?></td>
-                        <td><?= $report['lokasi_hilang'] ?></td>
-                        <td><?= date('d M Y', strtotime($report['tanggal_hilang'])) ?></td>
-                        <td>
-                            <span class="badge bg-secondary"><?= $report['status'] ?></span>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
+                    <?php if(empty($reports)): ?>
+                        <tr><td colspan="6" class="text-center">Belum ada aduan.</td></tr>
+                    <?php else: ?>
+                        <?php foreach($reports as $report): ?>
+                        <tr>
+                            <td>#LT<?= str_pad($report['id'], 4, '0', STR_PAD_LEFT) ?></td>
+                            <td><?= $report['nama_barang'] ?></td>
+                            <td><?= $report['lokasi_hilang'] ?></td>
+                            <td><?= date('d M Y', strtotime($report['tanggal_hilang'])) ?></td>
+                            <td>
+                                <?php 
+                                    $warnaBadge = 'bg-secondary'; 
+                                    if ($report['status'] == 'Menunggu Verifikasi') {
+                                        $warnaBadge = 'bg-warning text-dark'; 
+                                    } elseif ($report['status'] == 'Dalam Pencarian') {
+                                        $warnaBadge = 'bg-info text-dark'; 
+                                    } elseif ($report['status'] == 'Ditemukan') {
+                                        $warnaBadge = 'bg-success'; 
+                                    } elseif ($report['status'] == 'Ditutup') {
+                                        $warnaBadge = 'bg-dark'; 
+                                    }
+                                ?>
+                                <span class="badge <?= $warnaBadge ?>"><?= $report['status'] ?></span>
+                            </td>
+                            <td>
+                                <a href="index.php?page=riwayat_status&id=<?= $report['id'] ?>" class="btn btn-sm" style="background-color: #4da6ff; color: white;">
+                                    <i class="bi bi-search"></i> Lacak
+                                </a>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>

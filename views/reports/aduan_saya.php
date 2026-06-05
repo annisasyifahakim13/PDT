@@ -25,11 +25,11 @@
             <span>Halo, <?= $_SESSION['user']['nama'] ?></span>
         </div>
 
-        <div class="card">
+        <div class="card mt-4">
             <div class="card-header bg-white">
                 <h5 class="mb-0">Semua Laporan (Termasuk Arsip/Selesai)</h5>
             </div>
-            <table class="table table-hover align-middle">
+            <table class="table table-hover align-middle mb-0">
                 <thead>
                     <tr>
                         <th>ID Aduan</th>
@@ -37,11 +37,12 @@
                         <th>Lokasi</th>
                         <th>Tanggal</th>
                         <th>Status</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if(empty($reports)): ?>
-                        <tr><td colspan="5" class="text-center">Belum ada aduan.</td></tr>
+                        <tr><td colspan="6" class="text-center">Belum ada aduan.</td></tr>
                     <?php else: ?>
                         <?php foreach($reports as $report): ?>
                         <tr>
@@ -49,7 +50,26 @@
                             <td><?= $report['nama_barang'] ?></td>
                             <td><?= $report['lokasi_hilang'] ?></td>
                             <td><?= date('d M Y', strtotime($report['tanggal_hilang'])) ?></td>
-                            <td><span class="badge bg-secondary"><?= $report['status'] ?></span></td>
+                            <td>
+                                <?php 
+                                    $warnaBadge = 'bg-secondary';
+                                    if ($report['status'] == 'Menunggu Verifikasi') {
+                                        $warnaBadge = 'bg-warning text-dark';
+                                    } elseif ($report['status'] == 'Dalam Pencarian') {
+                                        $warnaBadge = 'bg-info text-dark';
+                                    } elseif ($report['status'] == 'Ditemukan') {
+                                        $warnaBadge = 'bg-success';
+                                    } elseif ($report['status'] == 'Ditutup') {
+                                        $warnaBadge = 'bg-dark';
+                                    }
+                                ?>
+                                <span class="badge <?= $warnaBadge ?>"><?= $report['status'] ?></span>
+                            </td>
+                            <td>
+                                <a href="index.php?page=riwayat_status&id=<?= $report['id'] ?>" class="btn btn-sm" style="background-color: #4da6ff; color: white;">
+                                    <i class="bi bi-search"></i> Lacak
+                                </a>
+                            </td>
                         </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>

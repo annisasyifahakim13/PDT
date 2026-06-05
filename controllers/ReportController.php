@@ -46,6 +46,7 @@ class ReportController
             $totalAduan = count($reports);
             $menunggu = 0;
             $ditemukan = 0;
+            
             foreach($reports as $report)
             {
                 if($report['status'] == 'Menunggu Verifikasi')
@@ -60,25 +61,28 @@ class ReportController
             require __DIR__ . '/../views/reports/index.php';
         }
     }
+
     public function verify()
     {
         $id = $_GET['id'];
         $this->reportModel->verify($id);
         redirect('index.php?page=reports');
     }
-public function updateStatus()
-{
-    $id = $_POST['id'];
-    $status = $_POST['status'];
 
-    $this->reportModel->updateStatus(
-        $id,
-        $status
-    );
+    public function updateStatus()
+    {
+        $id = $_POST['id'];
+        $status = $_POST['status'];
 
-    header('Location: index.php?page=reports');
-    exit;
-}
+        $this->reportModel->updateStatus(
+            $id,
+            $status
+        );
+
+        header('Location: index.php?page=reports');
+        exit;
+    }
+
     public function create()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -113,10 +117,10 @@ public function updateStatus()
 
         require __DIR__ . '/../views/reports/create.php';
     }
+
     public function aduanSaya()
     {
         $reports = $this->reportModel->getAduanSaya($_SESSION['user']['id']);
-        
         require __DIR__ . '/../views/reports/aduan_saya.php';
     }
 
@@ -124,9 +128,29 @@ public function updateStatus()
     {
         if($_SESSION['user']['role'] == 'admin') {
             $reports = $this->reportModel->getHistoryUnion();
-            require __DIR__ . '/../views/admin/history.php'; // Ini file history.php yang kita buat di obrolan sebelumnya
+            require __DIR__ . '/../views/admin/history.php'; 
         } else {
             redirect('index.php?page=reports');
         }
+    }
+
+    public function riwayatStatus()
+    {
+        if (!isset($_GET['id'])) {
+            header('Location: index.php?page=reports');
+            exit;
+        }
+
+        $id = $_GET['id'];
+        
+        $report = $this->reportModel->getById($id);
+        $history = $this->reportModel->getRiwayatStatus($id);
+
+        if (!$report) {
+            header('Location: index.php?page=reports');
+            exit;
+        }
+
+        require __DIR__ . '/../views/reports/riwayat_status.php';
     }
 }
