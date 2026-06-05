@@ -96,5 +96,30 @@ Alur proses backup otomatis:
 Task Scheduler → backup_auto.bat → backup.php
         
 storage/backups
-
 Dengan adanya fitur ini, proses pencadangan data dapat dilakukan tanpa campur tangan pengguna sehingga risiko kehilangan data dapat diminimalkan.
+
+## Simulasi Deadlock
+Fitur ini digunakan saat administrator melakukan perubahan status laporan kehilangan. Ketika satu administrator sedang memproses perubahan status suatu laporan, data laporan tersebut akan dikunci (locked) sehingga administrator lain tidak dapat mengubah data yang sama secara bersamaan.
+
+Kode :
+SELECT *
+FROM reports
+WHERE id = ?
+FOR UPDATE;
+
+>> Simulasi Konflik Akses Data
+Untuk keperluan pengujian, sistem mensimulasikan kondisi konflik akses data (deadlock scenario) dengan memberikan jeda proses menggunakan:
+
+sleep(15);
+Apabila dua administrator mencoba memperbarui status laporan yang sama secara bersamaan, maka:
+- Admin pertama akan memperoleh lock pada data laporan.
+- Admin kedua harus menunggu hingga transaksi pertama selesai.
+- Jika waktu tunggu melebihi batas yang ditentukan oleh database (innodb_lock_wait_timeout), maka transaksi salah satu akan gagal dan menghasilkan pesan timeout.
+
+Contoh skenario:
+- Admin A → Mengubah status laporan 1 menjadi "Ditemuka"
+- Admin B → Secara bersamaan mengubah status laporan 1 menjadi "Ditemukan"
+Hasil:
+- Admin A berhasil menyimpan perubahan.
+- Admin B menunggu hingga lock dilepas.
+Jika waktu tunggu melebihi batas, sistem akan menampilkan pesan timeout.
