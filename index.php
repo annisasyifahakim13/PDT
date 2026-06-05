@@ -64,6 +64,11 @@ switch ($page) {
         (new ReportController())->history();
         break;
 
+    case 'riwayat_status':
+        require_once __DIR__ . '/controllers/ReportController.php';
+        (new ReportController())->riwayatStatus();
+        break;
+
     case 'backup':
         require 'views/admin/backup_list.php';
         break;
